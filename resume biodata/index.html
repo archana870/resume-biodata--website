@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHANA LS - Resume & Bio-data</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #051a7a;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #eda2a2;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #4160eb;
+        }
+
+        /* Pages Container */
+        .page {
+            display: none;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            animation: fadeIn 0.5s;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Page */
+        .hero {
+            background: white;
+            border-radius: 20px;
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .profile-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            margin: 0 auto 2rem;
+            display: block;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        /* Resume Page */
+        .resume-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .experience-item, .education-item, .project-item {
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            border-left: 3px solid #764ba2;
+        }
+
+        .experience-item h3, .education-item h3, .project-item h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-item .company, .education-item .institution, .project-item .tech {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .experience-item .duration, .education-item .duration, .project-item .duration {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .experience-item ul, .skills-list, .project-item ul {
+            list-style-position: inside;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .skills-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Bio-data Page */
+        .biodata-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .biodata-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .biodata-header h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .biodata-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .biodata-table tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        .biodata-table td {
+            padding: 1.5rem 1rem;
+            font-size: 1.1rem;
+        }
+
+        .biodata-table td:first-child {
+            font-weight: 600;
+            color: #667eea;
+            width: 30%;
+        }
+
+        .biodata-table td:last-child {
+            color: #666;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .biodata-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .biodata-table td:first-child {
+                padding-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Archana L S</div>
+            <ul class="nav-links">
+                <li><a id="homeLink">Home</a></li>
+                <li><a id="resumeLink">Resume</a></li>
+                <li><a id="biodataLink">Bio-data</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page active">
+        <div class="hero">
+            <div class="profile image">ALS</div>
+            <img class="profile-photo" src="profile image.jpg.webp" alt="Archana L S">
+            <h1>Archana L S</h1>
+            <h2>Computer Science Student</h2>
+            <p>Passionate computer science student eager to apply theoretical knowledge to real-world projects. Strong foundation in programming, web development, and problem-solving. Actively seeking internship opportunities to gain practical experience and contribute to innovative projects.</p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>lsarchana4@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <span>📱</span>
+                    <span>+91 8660482033</span>
+                </div>
+                <div class="contact-item">
+                    <span>📍</span>
+                    <span>Bangalore, Karnataka, India</span>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <button class="btn" onclick="downloadResume()">Download Resume</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resume Page -->
+    <div id="resumePage" class="page">
+        <div class="resume-container">
+            <h1 style="text-align: center; color: #163add; margin-bottom: 2rem; font-size: 2.5rem;">Resume</h1>
+            
+            <!-- Career Objective -->
+            <div class="section">
+                <h2>Career Objective</h2>
+                <p style="color: #666; line-height: 1.8;">Enthusiastic and dedicated Computer Science student seeking an internship opportunity to apply academic knowledge in software development, web technologies, and data structures. Eager to learn from industry professionals and contribute to innovative projects while developing practical skills in a professional environment.</p>
+            </div>
+
+            <!-- Education -->
+            <div class="section">
+                <h2>Education</h2>
+                
+                <div class="education-item">
+                    <h3>Bachelor of Technology in Computer Science</h3>
+                    <div class="institution">East Point College of Engineering and Technology</div>
+                    <div class="duration">2023 - 2027 (Expected)</div>
+                    <p style="color: #666;">CGPA: 8.0/10 | Relevant coursework: Data Structures, Algorithms, Web Development, Database Management Systems, Operating Systems, Computer Networks</p>
+                </div>
+
+                <div class="education-item">
+                    <h3>12th Standard (Science - PCMB)</h3>
+                    <div class="institution">Jawahar Navodaya Vidyalaya, Mangalore</div>
+                    <div class="duration">2022 - 2023</div>
+                    <p style="color: #666;">Percentage: 75% | Subjects: Physics, Chemistry, Mathematics, Biology</p>
+                </div>
+
+                <div class="education-item">
+                    <h3>10th Standard</h3>
+                    <div class="institution">Jawahar Navodaya Vidyalaya, Bangalore</div>
+                    <div class="duration">2020-2021</div>
+                    <p style="color: #7e7575;">Percentage:83% | Subjects: Maths, Science, Social Studies</p>
+                </div>
+            </div>
+
+            <!-- Academic Projects -->
+            <div class="section">
+                <h2>Academic Projects</h2>
+                
+                <div class="project-item">
+                    <h3>E-Commerce Website</h3>
+                    <div class="tech">Technologies: HTML, CSS, JavaScript, PHP, MySQL</div>
+                    <div class="duration">January 2024 - April 2024</div>
+                    <ul>
+                        <li>Developed a fully functional e-commerce platform with user authentication</li>
+                        <li>Implemented shopping cart, product catalog, and payment gateway integration</li>
+                        <li>Created admin panel for inventory management</li>
+                        <li>Designed responsive UI for mobile and desktop devices</li>
+                    </ul>
+                </div>
+
+                <div class="project-item">
+                    <h3>AI Based Lung Cancer Detection</h3>
+                    <div class="tech">Technologies: python , machine learning ,flask ,html,css,javascript</div>
+                    <div class="duration">August 2025 - November 2025</div>
+                    <ul>
+                        <li>Built a web applicationt to detect lung cancer using machine learning </li>
+                        <li>used tenserflow and keras library for training the model                                           </li>
+                        <li>Created a user-friendly web application for easy navigation</li>
+                        <li>Added features for lung cancer detection and report generation</li>
+                    </ul>
+                </div>
+ 
+                <div class="project-item">
+                    <h3>Weather Application</h3>
+                    <div class="tech">Technologies: React.js, API Integration, CSS</div>
+                    <div class="duration">September 2024</div>
+                    <ul>
+                        <li>Developed weather forecasting app using OpenWeather API</li>
+                        <li>Implemented real-time weather data display with location search</li>
+                        <li>Created responsive design with dynamic backgrounds</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Technical Skills -->
+            <div class="section">
+                <h2>Technical Skills</h2>
+                <div class="skills-list">
+                    <div class="skill-item">C Programming</div>
+                    <div class="skill-item">C++</div>
+                    <div class="skill-item">Java</div>
+                    <div class="skill-item">Python</div>
+                    <div class="skill-item">HTML & CSS</div>
+                    <div class="skill-item">JavaScript</div>
+    
+                    <div class="skill-item">Machine Learning</div>
+                    <div class="skill-item">Flask</div>
+                    <div class="skill-item">Tenserflow</div>
+                    <div class="skill-item">Keras</div>
+
+
+                    <div class="skill-item">PHP</div>
+                    <div class="skill-item">MySQL</div>
+                    <div class="skill-item">Git & GitHub</div>
+                    <div class="skill-item">Data Structures</div>
+                    <div class="skill-item">Algorithms</div>
+                </div>
+            </div>
+
+            <!-- Internships / Training -->
+            <div class="section">
+                <h2>Internships & Training</h2>
+                
+                <div class="experience-item">
+                    <h3>Web Development Intern</h3>
+                    <div class="company">TechStart Solutions (Virtual Internship)</div>
+                    <div class="duration">June 2024 - July 2024</div>
+                    <ul>
+                        <li>Completed 6-week virtual internship program</li>
+                        <li>Developed 3 responsive websites using HTML, CSS, and JavaScript</li>
+                        <li>Learned best practices for web design and development</li>
+                        <li>Collaborated with team using Git version control</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Certifications & Courses -->
+            <div class="section">
+                <h2>Certifications & Online Courses</h2>
+                <ul style="list-style-position: inside; color: #ed9c9c; line-height: 2;">
+                    <li>Python for Everybody - Coursera (University of Michigan)</li>
+                    <li>Oracle Certified Foundations Associate - Oracle Cloud infastructure 2025 Certified AI Foundations Associate </li>
+                    <li>Data Structures and Algorithms - NPTEL</li>
+                    <li>Oracle AI Vector Search Certified professional 2025</li>
+                    <li>Oracle Cloud infastructure 2025 Certified Generative AI professional</li>
+                    <li>MangoDb for Beginners - Udemy</li>
+                </ul>
+            </div>
+
+            <!-- Achievements -->
+            <div class="section">
+                <h2>Achievements & Activities</h2>
+                <ul style="list-style-position: inside; color: #e85858; line-height: 2;">
+          
+                    <li>Active member and part of STEM for GIRLS By AVANTI FELLOWS 2025</li>
+                    <li>Participated in BHARATIYA ANTARIKSH Hackathon 2025</li>
+                    <li>Attended a workshop on tech summit 2025</li>
+                    <li> Attended mentorship program by AVANTI FELLOWS with a team of 15 students collaborated with SAP mentors - mentorship program 2025</li>
+                    
+                </ul>
+            </div>
+
+            <!-- Soft Skills -->
+            <div class="section">
+                <h2>Soft Skills</h2>
+                <ul style="list-style-position: inside; color: #666; line-height: 2;">
+                    <li>Problem Solving and Analytical Thinking</li>
+                    <li>Team Collaboration and Communication</li>
+                    <li>Time Management and Organization</li>
+                    <li>Quick Learner and Adaptable</li>
+                    <li>Attention to Detail</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bio-data Page -->
+    <div id="biodataPage" class="page">
+        <div class="biodata-container">
+            <div class="biodata-header">
+                <h1>Bio-data</h1>
+                <p style="color: #666; font-size: 1.1rem;">Personal and Academic Information</p>
+            </div>
+
+            <table class="biodata-table">
+                <tr>
+                    <td>Full Name</td>
+                    <td>Archana L S</td>
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td>April 29, 2006</td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>Female</td>
+                </tr>
+                <tr>
+                    <td>Nationality</td>
+                    <td>Indian</td>
+                </tr>
+                <tr>
+                    <td>Marital Status</td>
+                    <td>Unmarried</td>
+                </tr>
+                <tr>
+                    <td>Father's Name</td>
+                    <td>Shyam Shankar L V</td>
+                </tr>
+                <tr>
+                    <td>Mother's Name</td>
+                    <td>K Mohanamma</td>
+                </tr>
+                <tr>
+                    <td>Permanent Address</td>
+                    <td>Lakshmipura,Srinivasapura , Karnataka - 563133</td>
+                </tr>
+                <tr>
+                    <td>Current Address</td>
+                    <td>Sri Anand Hospital 3rd floor ,narsapura industrial area ,kolar ,karnataka -563133</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>lsarchana4@gmail.com</td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td>+91 8660482033</td>
+                </tr>
+                <tr>
+                    <td>LinkedIn</td>
+                    <td>https://www.linkedin.com/in/archana-ls-1327a62a5?utm_source=share_via&utm_content=profile&utm_medium=member_android</td>
+                </tr>
+                <tr>
+                    <td>GitHub</td>
+                    <td>https://github.com/archana870</td>
+                </tr>
+                <tr>
+                    <td>Languages Known</td>
+                    <td>English, Hindi, Kannada</td>
+                </tr>
+                <tr>
+                    <td>Hobbies</td>
+                    <td>Coding, Reading Tech Blogs, Photography, Playing Badminton, Learning New Technologies</td>
+                </tr>
+                <tr>
+                    <td>Strengths</td>
+                    <td>Quick Learner, Hardworking, Problem-Solving, Team Player, Dedicated</td>
+                </tr>
+                <tr>
+                    <td>Career Goal</td>
+                    <td>To become a skilled software developer and contribute to innovative technology solutions that make a positive impact on society. Looking forward to gaining industry experience through internships and building a successful career in the tech industry.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Page navigation using jQuery
+            $('#homeLink').click(function() {
+                showPage('homePage');
+            });
+
+            $('#resumeLink').click(function() {
+                showPage('resumePage');
+            });
+
+            $('#biodataLink').click(function() {
+                showPage('biodataPage');
+            });
+
+            function showPage(pageId) {
+                $('.page').removeClass('active');
+                $('#' + pageId).addClass('active');
+                $('html, body').animate({ scrollTop: 0 }, 300);
+            }
+
+            // Smooth scroll animation for nav
+            $('.nav-links a').hover(
+                function() {
+                    $(this).animate({ color: '#667eea' }, 200);
+                },
+                function() {
+                    $(this).animate({ color: '#333' }, 200);
+                }
+            );
+
+            // Animate skill items on hover
+            $('.skill-item').hover(
+                function() {
+                    $(this).css('transform', 'translateY(-5px) scale(1.05)');
+                },
+                function() {
+                    $(this).css('transform', 'translateY(0) scale(1)');
+                }
+            );
+        });
+
+        // Download Resume function
+        function downloadResume() {
+            alert('Resume download functionality would be implemented here!\n\nIn a real scenario, this would download a PDF version of the resume.');
+        }
+
+        // Add fade-in animation on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const position = section.getBoundingClientRect();
+                if (position.top < window.innerHeight - 100) {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
